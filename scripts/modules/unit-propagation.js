@@ -12,14 +12,14 @@ class UnitPropagation {
         try {
             const { formula } = config;
             
-            if (this.debug) {
+            /*if (this.debug) {
                 console.log('Performing unit propagation:');
                 console.log('Initial formula:', formula);
-            }
+            }*/
 
             // Parse and convert to CNF clauses
             const clauses = this.parseToClauses(formula);
-            if (this.debug) console.log('Initial clauses:', clauses);
+            //if (this.debug) console.log('Initial clauses:', clauses);
 
             const steps = [];
             const literals = new Set();
@@ -33,10 +33,10 @@ class UnitPropagation {
                 const literal = unitClause[0];
                 literals.add(literal);
 
-                if (this.debug) {
+                /*if (this.debug) {
                     console.log('Found unit clause:', unitClause);
                     console.log('Propagating literal:', literal);
-                }
+                }*/
 
                 const beforeClauses = JSON.parse(JSON.stringify(currentClauses));
                 currentClauses = this.propagateLiteral(currentClauses, literal);
@@ -47,14 +47,14 @@ class UnitPropagation {
                     afterClauses: currentClauses.map(c => c.join(','))
                 });
 
-                if (this.debug) {
+                /*if (this.debug) {
                     console.log('After propagation:', currentClauses);
-                }
+                }*/
             }
 
             // Format the result in the required format
             const formattedResult = this.formatResults(currentClauses, literals);
-            console.log("FORMATTED RESULT: " + formattedResult);
+            //console.log("FORMATTED RESULT: " + formattedResult);
             
             return {
                 formula: formula,

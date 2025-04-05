@@ -12,24 +12,24 @@ class TruthTableGenerator {
             // Extract formula from config object or use directly if string was passed
             const formula = typeof config === 'object' ? config.formula : config;
             
-            if (this.debug) console.log('Generating truth table for:', formula);
+            //if (this.debug) console.log('Generating truth table for:', formula);
 
             // Parse formula
             const parsedFormula = Parser.parse(formula);
-            if (this.debug) console.log('Parsed formula:', parsedFormula);
+            //if (this.debug) console.log('Parsed formula:', parsedFormula);
 
             // Get unique variables
             const variables = this.extractVariables(parsedFormula);
-            if (this.debug) console.log('Variables found:', variables);
+            //if (this.debug) console.log('Variables found:', variables);
 
             // Generate all possible assignments
             const assignments = this.generateAssignments(variables);
-            if (this.debug) console.log('Generated assignments:', assignments);
+            //if (this.debug) console.log('Generated assignments:', assignments);
 
             // Evaluate formula for each assignment
             const rows = assignments.map(assignment => {
                 const result = this.evaluateFormula(parsedFormula, assignment);
-                if (this.debug) console.log('Evaluation for', assignment, ':', result);
+                //if (this.debug) console.log('Evaluation for', assignment, ':', result);
                 return { assignment, result };
             });
 

@@ -12,7 +12,7 @@ class PureAtomSimplifier {
         try {
             const { formula } = config;
             
-            if (this.debug) {
+            /*if (this.debug) {
                 console.log('Simplifying pure atoms:');
                 console.log('Initial formula:', formula);
             }
@@ -23,7 +23,7 @@ class PureAtomSimplifier {
             if (this.debug) {
                 console.log('Pure atoms found:', result.pureAtoms);
                 console.log('Simplified formula:', result.simplifiedFormula);
-            }
+            }*/
 
             return {
                 formula: formula,
@@ -43,11 +43,11 @@ class PureAtomSimplifier {
             
             // Step 1: Collect all variables and their polarities
             const variablePolarities = this.collectVariablePolarities(ast);
-            if (this.debug) console.log('Variable polarities:', variablePolarities);
+            //if (this.debug) console.log('Variable polarities:', variablePolarities);
             
             // Step 2: Find pure atoms (variables appearing with only one polarity)
             const pureAtoms = this.findPureAtoms(variablePolarities);
-            if (this.debug) console.log('Pure atoms:', pureAtoms);
+            //if (this.debug) console.log('Pure atoms:', pureAtoms);
             
             // Step 3: Simplify the formula by replacing pure atoms with T or F
             const simplifiedAst = this.substituteAndSimplify(ast, pureAtoms);

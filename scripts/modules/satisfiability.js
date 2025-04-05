@@ -12,19 +12,19 @@ class SatisfiabilityChecker {
             // Extract formula from config object or use directly if string was passed
             const formula = typeof config === 'object' ? config.formula : config;
             
-            if (this.debug) console.log('Checking satisfiability for:', formula);
+            //if (this.debug) console.log('Checking satisfiability for:', formula);
 
             // Parse formula
             const parsedFormula = Parser.parse(formula);
-            if (this.debug) console.log('Parsed formula:', parsedFormula);
+            //if (this.debug) console.log('Parsed formula:', parsedFormula);
 
             // Get variables
             const variables = this.extractVariables(parsedFormula);
-            if (this.debug) console.log('Variables found:', variables);
+            //if (this.debug) console.log('Variables found:', variables);
 
             // Generate all possible assignments
             const assignments = this.generateAssignments(variables);
-            if (this.debug) console.log('Total assignments to check:', assignments.length);
+            //if (this.debug) console.log('Total assignments to check:', assignments.length);
 
             // Track evaluation results
             let trueCount = 0;
@@ -33,7 +33,7 @@ class SatisfiabilityChecker {
             // Evaluate all assignments
             for (const assignment of assignments) {
                 const result = this.evaluateFormula(parsedFormula, assignment);
-                if (this.debug) console.log('Assignment:', assignment, 'Result:', result);
+                //if (this.debug) console.log('Assignment:', assignment, 'Result:', result);
 
                 if (result) {
                     trueCount++;
@@ -53,11 +53,11 @@ class SatisfiabilityChecker {
                 status = 'satisfiable';
             }
 
-            if (this.debug) {
+            /*if (this.debug) {
                 console.log('Satisfiability status:', status);
                 console.log('True assignments:', trueCount);
                 console.log('Total assignments:', assignments.length);
-            }
+            }*/
 
             return {
                 status,

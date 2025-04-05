@@ -69,19 +69,19 @@ class SubformulaExtractor {
         try {
             const { formula, position } = config;
             
-            if (this.debug) {
+            /*if (this.debug) {
                 console.log('Extracting subformula:');
                 console.log('Formula:', formula);
                 console.log('Position:', position);
-            }
+            }*/
 
             // Parse the formula
             const parsedFormula = Parser.parse(formula);
-            if (this.debug) console.log('Parsed formula:', parsedFormula);
+            //if (this.debug) console.log('Parsed formula:', parsedFormula);
 
             // Get subformula at position
             const subformula = Tree.getSubformulaAtPosition(parsedFormula, position);
-            if (this.debug) console.log('Extracted subformula:', subformula);
+            //if (this.debug) console.log('Extracted subformula:', subformula);
 
             if (!subformula) {
                 throw new Error(`Invalid position: "${position}"`);
@@ -89,7 +89,7 @@ class SubformulaExtractor {
 
             // Format the subformula
             const formattedSubformula = Formatter.format(subformula);
-            if (this.debug) console.log('Formatted subformula:', formattedSubformula);
+            //if (this.debug) console.log('Formatted subformula:', formattedSubformula);
 
             return {
                 formula: formula,

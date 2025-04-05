@@ -11,11 +11,11 @@ class GeneralDeterminismChecker {
     calculate(config) {
         try {
             const { formula } = config;
-            
+            /*
             if (this.debug) {
                 console.log('Checking general determinism:');
                 console.log('Formula:', formula);
-            }
+            }*/
 
             const result = this.checkGeneralDeterminism(formula);
 
@@ -63,7 +63,7 @@ class GeneralDeterminismChecker {
 
     checkGeneralDeterminism(formula) {
         const clauses = this.parseCNF(formula);
-        if (this.debug) console.log('Parsed clauses:', clauses);
+        /*if (this.debug) console.log('Parsed clauses:', clauses);*/
 
         // Check if unit propagation can be used
         const hasUnitClauses = clauses.some(clause => clause.length === 1);

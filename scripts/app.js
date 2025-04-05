@@ -73,11 +73,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const error = 'Core components not loaded properly. Check console for details.';
         alert(error);
         console.error(error);
-        console.log('Dependencies missing:', {
+        /*console.log('Dependencies missing:', {
             'Parser': typeof Parser === 'undefined' ? 'Missing' : 'Loaded',
             'Formatter': typeof Formatter === 'undefined' ? 'Missing' : 'Loaded',
             'Tree': typeof Tree === 'undefined' ? 'Missing' : 'Loaded'
-        });
+        });*/
         return;
     }
 
@@ -146,22 +146,22 @@ function loadSelectedModule() {
                 // Instantiate the module class
                 try {
                     moduleInstance = new window[moduleClassName]();
-                    console.log(`Module ${moduleClassName} loaded successfully`);
+                    // console.log(`Module ${moduleClassName} loaded successfully`);
                 } catch (e) {
                     console.error(`Error instantiating ${moduleClassName}:`, e);
                     alert(`Error initializing module: ${e.message}`);
                 }
             } else {
-                console.error(`Module class ${moduleClassName} not found after loading script`);
+                /*console.error(`Module class ${moduleClassName} not found after loading script`);
                 console.log('Available global objects:', Object.keys(window).filter(key => 
                     typeof window[key] === 'function' && 
                     !['eval', 'isFinite', 'isNaN', 'parseFloat', 'parseInt', 'decodeURI'].includes(key)
-                ));
+                ));*/
                 alert(`Failed to initialize module: Class ${moduleClassName} not found. Check console for details.`);
             }
         })
         .catch(error => {
-            console.error('Error loading module script:', error);
+            /*console.error('Error loading module script:', error);*/
             alert(`Failed to load script for "${config.title}". Check if the path ${config.scriptUrl} is correct.`);
         });
 }
@@ -196,15 +196,15 @@ function getModuleClassName(moduleId) {
  */
 function loadScript(url) {
     return new Promise((resolve, reject) => {
-        console.log(`Attempting to load script: ${url}`);
+        //console.log(`Attempting to load script: ${url}`);
         const script = document.createElement('script');
         script.src = url;
         script.onload = () => {
-            console.log(`Successfully loaded script: ${url}`);
+            //console.log(`Successfully loaded script: ${url}`);
             resolve();
         };
         script.onerror = (error) => {
-            console.error(`Failed to load script: ${url}`, error);
+            //console.error(`Failed to load script: ${url}`, error);
             reject(new Error(`Failed to load ${url}. Make sure the file exists and is accessible.`));
         };
         document.body.appendChild(script);
@@ -236,7 +236,7 @@ function performCalculation() {
     };
     
     try {
-        console.log('Config object being passed to module:', config);
+        //console.log('Config object being passed to module:', config);
         
         // Call the module's calculate method
         if (typeof moduleInstance.calculate === 'function') {

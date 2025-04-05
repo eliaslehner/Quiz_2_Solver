@@ -13,24 +13,24 @@ class TseytinTransformer {
         try {
             const { formula } = config;
             
-            if (this.debug) {
+            /*if (this.debug) {
                 console.log('Performing Tseytin transformation:');
                 console.log('Initial formula:', formula);
-            }
+            }*/
 
             // Reset auxiliary variable counter
             this.nextVar = 0;
 
             // Parse formula
             const parsedFormula = Parser.parse(formula);
-            if (this.debug) console.log('Parsed formula:', parsedFormula);
+            //if (this.debug) console.log('Parsed formula:', parsedFormula);
 
             // Perform transformation
             const result = this.transform(parsedFormula);
-            if (this.debug) {
+            /*if (this.debug) {
                 console.log('Auxiliary variables:', result.auxVariables);
                 console.log('CNF clauses:', result.clauses);
-            }
+            }*/
 
             return {
                 originalFormula: formula,
@@ -51,7 +51,7 @@ class TseytinTransformer {
         
         // Get subformulas in the required order (constraint #2)
         const subformulas = this.getSpecifiedOrderSubformulas(formula);
-        if (this.debug) console.log('Ordered subformulas:', subformulas);
+        //if (this.debug) console.log('Ordered subformulas:', subformulas);
 
         // Transform each subformula
         const nameMap = new Map();

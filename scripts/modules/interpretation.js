@@ -12,7 +12,7 @@ class InterpretationTester {
         try {
             const { formula, interpretation, statement } = config;
             
-            if (this.debug) {
+            /*if (this.debug) {
                 console.log('Testing interpretation:');
                 console.log('Formula:', formula);
                 console.log('Interpretation:', interpretation);
@@ -25,7 +25,7 @@ class InterpretationTester {
 
             // Parse and evaluate the statement
             const isValid = this.evaluateStatement(statement, formula, assignment);
-            if (this.debug) console.log('Statement evaluation:', isValid);
+            if (this.debug) console.log('Statement evaluation:', isValid);*/
 
             return {
                 formula: formula,
