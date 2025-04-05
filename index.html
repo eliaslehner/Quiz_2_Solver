@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propositional Logic Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">Propositional Logic Calculator</a>
+            <div class="ms-auto">
+                <span class="navbar-text">
+                    Created by Lehner Elias
+                </span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-4">
+        <!-- Module Selection -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Select Calculation Type</h5>
+                    </div>
+                    <div class="card-body">
+                        <select id="module-selector" class="form-select mb-3">
+                            <option value="" selected disabled>Choose a calculation type...</option>
+                            <option value="truth-table">Truth Table</option>
+                            <option value="satisfiability">Satisfiability</option>
+                            <option value="subformula">Subformula by Position</option>
+                            <option value="unit-propagation">Unit Propagation (CNF)</option>
+                            <option value="interpretation">Interpretation Testing</option>
+                            <option value="polarity">Polarity Calculation</option>
+                            <option value="cnf-determinism">Unit Propagation Determinism (CNF)</option>
+                            <option value="pure-atom">Pure Atom Simplification</option>
+                            <option value="general-determinism">Unit Propagation Determinism (General)</option>
+                            <option value="tseytin">Tseytin Transformation</option>
+                        </select>
+                        <button id="load-module-btn" class="btn btn-primary">Load Module</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dynamic Input Form -->
+        <div id="calculator-form" class="card mb-4 d-none">
+            <div class="card-header">
+                <h5 id="form-title" class="mb-0">Logic Calculator</h5>
+            </div>
+            <div class="card-body">
+                <!-- Base Formula Input (Always Present) -->
+                <div class="mb-1">
+                    <label for="formula" class="form-label">Formula:</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="formula-input" placeholder="Enter propositional formula">
+                        <button class="btn btn-outline-secondary" type="button" id="clear-formula-btn">Clear</button>
+                    </div>
+                    <div id="formula-buttons" class="formula-buttons mt-2">
+                        <div class="btn-group me-2 mb-2">
+                            <button class="btn btn-outline-secondary var-btn" data-value="a">a</button>
+                            <button class="btn btn-outline-secondary var-btn" data-value="b">b</button>
+                            <button class="btn btn-outline-secondary var-btn" data-value="c">c</button>
+                            <button class="btn btn-outline-secondary var-btn" data-value="d">d</button>
+                            <button class="btn btn-outline-secondary var-btn" data-value="e">e</button>
+                            <button class="btn btn-outline-secondary var-btn" data-value="f">f</button>
+                            <button class="btn btn-outline-secondary var-btn" data-value="g">g</button>
+                        </div>
+                        <div class="btn-group me-2 mb-2">
+                            <button class="btn btn-outline-secondary op-btn" data-value="¬">¬</button>
+                            <button class="btn btn-outline-secondary op-btn" data-value="∧">∧</button>
+                            <button class="btn btn-outline-secondary op-btn" data-value="∨">∨</button>
+                            <button class="btn btn-outline-secondary op-btn" data-value="→">→</button>
+                            <button class="btn btn-outline-secondary op-btn" data-value="↔">↔</button>
+                        </div>
+                        <div class="btn-group mb-2">
+                            <button class="btn btn-outline-secondary op-btn" data-value="(">(</button>
+                            <button class="btn btn-outline-secondary op-btn" data-value=")">)</button>
+                            <button class="btn btn-outline-secondary op-btn" data-value="⊤">⊤</button>
+                            <button class="btn btn-outline-secondary op-btn" data-value="⊥">⊥</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dynamic Additional Inputs -->
+                <div id="additional-inputs">
+                    <!-- Position Input (Hidden by Default) -->
+                    <div id="position-section" class="mb-1 d-none">
+                        <label for="position-input" class="form-label">Position:</label>
+                        <input type="text" class="form-control" id="position-input" placeholder="e.g., 1.2.1">
+                        <div class="mt-2">
+                            <button id="generate-positions-btn" class="btn btn-primary btn-sm btn-fixed-width">Generate Positions</button>
+                            <button id="show-tree-btn" class="btn btn-sm btn-secondary btn-fixed-width">Show Tree</button>
+                        </div>
+                    </div>
+
+                    <!-- Interpretation Input (Hidden by Default) -->
+                    <div id="interpretation-section" class="mb-4 d-none">
+                        <label for="interpretation-def" class="form-label">Interpretation:</label>
+                        <div class="input-group mb-2">
+                            <input type="text" class="form-control" id="interpretation-def" placeholder="e.g., I⊨¬c">
+                            <button class="btn btn-outline-secondary" type="button" id="clear-interp-def-btn">Clear</button>
+                        </div>
+                        <div class="interp-buttons mt-2 mb-3">
+                            <button class="btn btn-outline-secondary interp-btn" data-target="interpretation-def" data-value="I⊨">I⊨</button>
+                            <button class="btn btn-outline-secondary interp-btn" data-target="interpretation-def" data-value="¬">¬</button>
+                        </div>
+                        
+                        <label for="statement-check" class="form-label">Statement:</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="statement-check" placeholder="e.g., I⊨A↔((a→b)→d)">
+                            <button class="btn btn-outline-secondary" type="button" id="clear-statement-btn">Clear</button>
+                        </div>
+                        <div class="interp-buttons mt-2">
+                            <button class="btn btn-outline-secondary interp-btn" data-target="statement-check" data-value="I⊨">I⊨</button>
+                            <button class="btn btn-outline-secondary interp-btn" data-target="statement-check" data-value="¬">¬</button>
+                            <button class="btn btn-outline-secondary interp-btn" data-target="statement-check" data-value="∧">∧</button>
+                            <button class="btn btn-outline-secondary interp-btn" data-target="statement-check" data-value="∨">∨</button>
+                            <button class="btn btn-outline-secondary interp-btn" data-target="statement-check" data-value="→">→</button>
+                            <button class="btn btn-outline-secondary interp-btn" data-target="statement-check" data-value="↔">↔</button>
+                            <button class="btn btn-outline-secondary interp-btn" data-target="statement-check" data-value="(">(</button>
+                            <button class="btn btn-outline-secondary interp-btn" data-target="statement-check" data-value=")">)</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div>
+                    <button id="calculate-btn" class="btn btn-sm btn-primary btn-fixed-width">Calculate</button>
+                    <button id="reset-btn" class="btn btn-sm btn-secondary btn-fixed-width">Reset</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Display -->
+        <div id="output-section" class="card mb-4 d-none">
+            <div class="card-header">
+                <h5 class="mb-0">Results</h5>
+            </div>
+            <div class="card-body">
+                <div id="results-container"></div>
+                <div id="tree-container" class="mt-4 d-none"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="scripts/core/parser.js"></script>
+    <script src="scripts/core/formatter.js"></script>
+    <script src="scripts/core/tree.js"></script>
+    <script src="scripts/ui/formula-input.js"></script>
+    <script src="scripts/ui/position-input.js"></script>
+    <script src="scripts/ui/results-display.js"></script>
+    <script src="scripts/ui/ui-manager.js"></script>
+    <script src="scripts/app.js"></script>
+    <!-- script src="tests/test-runner.js"></script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof Parser === 'undefined' || typeof Formatter === 'undefined' || typeof Tree === 'undefined') {
+                console.error('Core components not loaded properly');
+                return;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+/* Tree visualization styles */
+.formula-tree-display {
+    font-family: monospace;
+    white-space: pre;
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid #dee2e6;
+    overflow-x: auto;
+    font-size: 14px;
+}
+
+.highlighted-position {
+    background-color: #ffe8a1;
+    font-weight: bold;
+    padding: 0 2px;
+    border-radius: 3px;
+}
+
+.position-list {
+    margin-top: 10px;
+}
+
+.position-item {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+}
+
+.position-value {
+    background-color: #f0f0f0;
+    padding: 2px 5px;
+    border-radius: 3px;
+    margin-right: 10px;
+    min-width: 30px;
+    text-align: center;
+    font-family: monospace;
+}
+
+.position-formula {
+    flex-grow: 1;
+    font-family: monospace;
+    margin-right: 10px;
+}
+
+/* Existing button styles stay the same */
+.formula-buttons .btn-group {
+    margin-right: 5px;
+}
+
+.btn-fixed-width {
+    min-width: 150px; /* You can adjust this value as needed */
+    text-align: center;
+}
+
+/* Button layout improvements */
+#position-section .d-flex.flex-wrap.gap-2 {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+#position-section .d-flex.flex-wrap.gap-2 .btn {
+    flex: 0 0 auto;
+}
+
+/* For smaller screens, ensure buttons stack properly */
+@media (max-width: 768px) {
+    #position-section .d-flex.flex-wrap.gap-2 {
+        justify-content: space-between;
+    }
+    
+    #position-section .d-flex.flex-wrap.gap-2 .btn {
+        margin-bottom: 0.5rem;
+    }
+    
+    #calculate-btn.ms-auto {
+        margin-left: 0 !important;
+    }
+}
+
+/* If needed, add these styles */
+.interp-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.interp-buttons .interp-btn {
+    min-width: 40px;
+    flex-shrink: 0;
+}
+
