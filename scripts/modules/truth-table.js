@@ -70,7 +70,8 @@ class TruthTableGenerator {
         for (let i = 0; i < n; i++) {
             const assignment = {};
             for (let j = 0; j < variables.length; j++) {
-                assignment[variables[j]] = Boolean((i >> j) & 1);
+                // Change: shift by (variables.length - 1 - j) instead of j
+                assignment[variables[j]] = Boolean((i >> (variables.length - 1 - j)) & 1);
             }
             assignments.push(assignment);
         }
