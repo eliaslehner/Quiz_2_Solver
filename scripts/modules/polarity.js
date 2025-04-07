@@ -12,7 +12,7 @@ class PolarityCalculator {
         try {
             const { formula, position } = config;
             
-            /*if (this.debug) {
+            if (this.debug) {
                 console.log('Calculating polarity:');
                 console.log('Formula:', formula);
                 console.log('Position:', position);
@@ -24,7 +24,7 @@ class PolarityCalculator {
 
             // Calculate polarity
             const polarityValue = this.calculatePolarity(parsedFormula, position);
-            if (this.debug) console.log('Calculated polarity value:', polarityValue);*/
+            if (this.debug) console.log('Calculated polarity value:', polarityValue);
 
             // Convert numeric polarity to string representation
             let polarity;
