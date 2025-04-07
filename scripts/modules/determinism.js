@@ -13,9 +13,9 @@ class DeterminismChecker {
             const { formula, type = 'cnf' } = config;
             
             if (this.debug) {
-                //console.log('Checking determinism:');
-                //console.log('Formula:', formula);
-                //console.log('Type:', type);
+                console.log('Checking determinism:');
+                console.log('Formula:', formula);
+                console.log('Type:', type);
             }
 
             let result;
@@ -94,7 +94,7 @@ class DeterminismChecker {
 
     checkCNFDeterminism(formula) {
         const clauses = this.parseCNF(formula);
-        /*if (this.debug) console.log('Parsed clauses:', clauses);*/
+        if (this.debug) console.log('Parsed clauses:', clauses);
 
         // Check if unit propagation can be used
         const hasUnitClauses = clauses.some(clause => clause.length === 1);
@@ -125,11 +125,34 @@ class DeterminismChecker {
             };
         }
 
+        // Check if all variables are assigned
+        const allVars = this.getAllVariables(clauses);
+        const allVarsAssigned = Array.from(allVars).every(v => propagationResult.assignments && propagationResult.assignments[v] !== undefined);
+
+        if (allVarsAssigned) {
+            return {
+                isDeterministic: true,
+                determinismResult: 'satisfiable',
+                explanation: "Unit propagation determines that the formula is satisfiable"
+            };
+        }
+
         return {
             isDeterministic: false,
             determinismResult: 'undetermined',
             explanation: "Unit propagation can be used but cannot determine satisfiability"
         };
+    }
+
+    getAllVariables(clauses) {
+        const variables = new Set();
+        for (const clause of clauses) {
+            for (const literal of clause) {
+                const variable = literal.startsWith('¬') ? literal.slice(1) : literal;
+                variables.add(variable);
+            }
+        }
+        return variables;
     }
 
     checkGeneralDeterminism(formula) {
@@ -161,38 +184,71 @@ class DeterminismChecker {
     }
 
     performUnitPropagation(clauses) {
-        let currentClauses = [...clauses];
+        // Make a deep copy of clauses and convert to Sets for more efficient operations
+        let currentClauses = clauses.map(clause => new Set(clause));
         const assignments = new Map();
         const steps = [];
-
+        
         while (true) {
-            const unitClause = currentClauses.find(c => c.length === 1);
+            // Find unit clauses
+            const unitClause = currentClauses.find(clause => clause.size === 1);
             if (!unitClause) break;
 
-            const literal = unitClause[0];
+            const literal = Array.from(unitClause)[0];
             const variable = literal.startsWith('¬') ? literal.slice(1) : literal;
             const value = !literal.startsWith('¬');
             
-            // Record this step for explanation purposes
             steps.push({
                 literal: literal,
                 value: value,
                 variable: variable
             });
 
+            // Check for contradictions in assignments
             if (assignments.has(variable) && assignments.get(variable) !== value) {
                 return { 
                     isContradiction: true,
                     steps: steps,
-                    explanation: `Contradiction found: ${variable} must be both ${assignments.get(variable)} and ${value}`
+                    assignments: Object.fromEntries(assignments)
                 };
             }
 
             assignments.set(variable, value);
-            currentClauses = this.propagateLiteral(currentClauses, literal);
 
+            // Apply unit propagation
+            const newClauses = [];
+            for (const clause of currentClauses) {
+                // Skip the unit clause itself
+                if (clause === unitClause) continue;
+
+                // If clause contains the literal, it's satisfied
+                if (clause.has(literal)) continue;
+
+                // Handle negation of the literal
+                const negLiteral = literal.startsWith('¬') ? literal.slice(1) : `¬${literal}`;
+                if (clause.has(negLiteral)) {
+                    const newClause = new Set(clause);
+                    newClause.delete(negLiteral);
+
+                    // If clause becomes empty, we have a contradiction
+                    if (newClause.size === 0) {
+                        return {
+                            isContradiction: true,
+                            steps: steps,
+                            assignments: Object.fromEntries(assignments)
+                        };
+                    }
+                    newClauses.push(newClause);
+                } else {
+                    newClauses.push(clause);
+                }
+            }
+
+            currentClauses = newClauses;
+
+            // If no clauses remain, formula is satisfied
             if (currentClauses.length === 0) {
-                return { 
+                return {
                     isEmpty: true,
                     steps: steps,
                     assignments: Object.fromEntries(assignments)
@@ -200,7 +256,7 @@ class DeterminismChecker {
             }
         }
 
-        return { 
+        return {
             remainingClauses: currentClauses,
             steps: steps,
             assignments: Object.fromEntries(assignments)
@@ -208,13 +264,15 @@ class DeterminismChecker {
     }
 
     propagateLiteral(clauses, literal) {
-        const negLiteral = literal.startsWith('¬') ? 
-            literal.slice(1) : `¬${literal}`;
-
+        const negLiteral = literal.startsWith('¬') ? literal.slice(1) : `¬${literal}`;
+        
         return clauses
-            .filter(clause => !clause.includes(literal))
-            .map(clause => clause.filter(lit => lit !== negLiteral))
-            .filter(clause => clause.length > 0);
+            .filter(clause => !clause.includes(literal)) // Remove clauses containing the literal
+            .map(clause => {
+                const newClause = clause.filter(lit => lit !== negLiteral);
+                return newClause;
+            })
+            .filter(clause => clause.length > 0); // Remove empty clauses
     }
 
     convertToCNF(formula) {
